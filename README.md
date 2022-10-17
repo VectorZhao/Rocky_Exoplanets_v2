@@ -6,7 +6,7 @@ We trained a machine learning model by using mixture density network (MDN) algor
 
 ## Quick Start
 ### Step 1:
-[Fork and clone](https://help.github.com/articles/fork-a-repo) a copy of the `Rocky_Exoplanets_v2` repository on to your local machine.
+[Fork and clone](https://help.github.com/articles/fork-a-repo) a copy of the `Rocky_Exoplanets_v2` repository to your local machine.
 
 ### Step 2:
 Download [`Anaconda`](https://www.anaconda.com/products/individual#Downloads) and install it on your machine.
