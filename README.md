@@ -1,8 +1,8 @@
 ## Overview
+🤖Machine learning (ML) promises dramatic speedups in characterizing the interior structure of exoplanets. Among various ML techniques, mixture density networks (MDNs) are quite appropriate to degenerate cases without sacrificing degenerate solutions. The MDN model requires large sets of data for training and yields multimodal probability distributions for various target variables through inputs of known quantities. Such a data-driven approach decouples interior model
+calculations from ML inferences and hence a well-trained ML model is capable of quickly characterizing planetary interiors. [Baumeister et al. (2020)](https://iopscience.iop.org/article/10.3847/1538-4357/ab5d32) applied MDN-based ML to infer the distribution of possible thicknesses of each planetary layer for exoplanets up to 25 Earth masses, where MDN inference for one planet takes only few miliseconds compared with the inversion computing time of potentially several hours. In [Zhao & Ni (2021)](https://www.aanda.org/articles/aa/abs/2021/06/aa40375-21/aa40375-21.html) and [Zhao & Ni (2022)](https://www.aanda.org/articles/aa/abs/2022/02/aa42874-21/aa42874-21.html), the MDN was used to simultaneously predict the layer thicknesses and core properties of exoplanets including Earth-like planets and gas giants.
 
-![MDN_Cartoon](https://user-images.githubusercontent.com/16644993/196080290-b73adcc4-c65b-4a57-91b9-5dc08a903d00.jpg)
-
-We trained a machine learning model by using mixture density network (MDN) algorithm to quickly and eﬃciently infer the interior structure of rocky exoplanets with large compositional diversity.
+In this work, We trained a machine learning model by using MDN algorithm to quickly and eﬃciently infer the interior structure of rocky exoplanets with large compositional diversity.
 
 ## Quick Start
 ### Step 1:
@@ -35,3 +35,9 @@ Open `Jupyter Notebook` and load the file `MDN_two_planets_prediction.ipynb`:
     $ jupyter notebook
 
 At this point you are ready to start investigating the interiors of rocky exoplanets!
+## References
+[https://iopscience.iop.org/article/10.3847/1538-4357/ab5d32](https://iopscience.iop.org/article/10.3847/1538-4357/ab5d32)
+
+[https://www.aanda.org/articles/aa/abs/2021/06/aa40375-21/aa40375-21.html](https://www.aanda.org/articles/aa/abs/2021/06/aa40375-21/aa40375-21.html)
+
+[https://www.aanda.org/articles/aa/abs/2022/02/aa42874-21/aa42874-21.html](https://www.aanda.org/articles/aa/abs/2022/02/aa42874-21/aa42874-21.html)
