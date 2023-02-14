@@ -4,20 +4,24 @@ calculations from ML inferences and hence a well-trained ML model is capable of 
 
 In this work, We trained a machine learning model by using MDN algorithm to quickly and eﬃciently infer the interior structure of rocky exoplanets with large compositional diversity.
 
+## Machine Learning Models
+We provide two machine learning models for uses: **Model A** trained on `[M, R, k2]` inputs and **Model B** trained on `[M, R, Fe/(Mg + Si), k2]` inputs. `M`, `R`, and `Fe/(Mg + Si)` represent the mass, radius, and bulk Fe/Si and Mg/Si abundance ratios of the planet, respectively, and `k2` is the tidal Love number. The relative refractory composition of rocky exoplanets can be well constrained by the elemental abundances of their host stars. **Model A** has a better predictive accuracy, but its application is limited by some difficulties in measuring the tidal Love number `k2` of rocky exoplanets. **Model B** significantly breaks the density-composition degeneracy and accurately predicts the interior properties of rocky exoplanets. Along with the development of space-based observation technologies, orbital or shape observations could be possible to determine the Love number `k2` of rocky exoplanets and hence the machine learning models B and C would be applied more broadly.
+
+
 ## Quick Start
 ### Step 1:
 [Fork and clone](https://help.github.com/articles/fork-a-repo) a copy of the `Rocky_Exoplanets_v2` repository to your local machine.
 
 ### Step 2:
 Download [`Anaconda`](https://www.anaconda.com/products/individual#Downloads) and install it on your machine.
-Create a `conda` environment called `Rocky_Exoplanets_v2` and install all the necessary dependencies:
+Create a `conda` environment called `Rocky_Exoplanets` and install all the necessary dependencies:
 
     $ conda create -n Rocky_Exoplanets pip python=3.7.6 keras-mdn-layer jupyter
     
 ### Step 3:
-Activate the `Rocky_Exoplanets_v2` environment:
+Activate the `Rocky_Exoplanets` environment:
 
-    $ conda activate Rocky_Exoplanets_v2
+    $ conda activate Rocky_Exoplanets
 
 ### Step 4:
 Change into your local copy of the `Rocky_Exoplanets_v2` repo:
