@@ -1,1 +1,1 @@
-from deepexo.main import PlanetSynth
+from deepexo.rockyplanet import PlanetSynth
