@@ -49,9 +49,9 @@ At this point you are ready to start investigating the interiors of rocky exopla
 ```python
 from deepexo import RockyEXO
 # Kepler-78b
-M = 1.77
-R = 1.228
-cFeMg = 0.685
+M = 1.77 # mass in Earth masses
+R = 1.228 # radius in Earth radii
+cFeMg = 0.685 # bulk Fe/(Mg + Si) (molar ratio)
 ```
 ## References
 [https://iopscience.iop.org/article/10.3847/1538-4357/ab5d32](https://iopscience.iop.org/article/10.3847/1538-4357/ab5d32)
