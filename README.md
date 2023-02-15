@@ -12,7 +12,6 @@ We provide two machine learning models for uses: **Model A** trained on `[M, R, 
 
 **Model A** has a better predictive accuracy, but its application is limited by some difficulties in measuring the tidal Love number `k2` of rocky exoplanets. **Model B** significantly breaks the density-composition degeneracy and accurately predicts the interior properties of rocky exoplanets. Along with the development of space-based observation technologies, orbital or shape observations could be possible to determine the Love number `k2` of rocky exoplanets and hence the machine learning models B and C would be applied more broadly.
 
-
 ## Quick Start
 ### Step 1:
 [Fork and clone](https://help.github.com/articles/fork-a-repo) a copy of the `Rocky_Exoplanets_v2` repository to your local machine.
