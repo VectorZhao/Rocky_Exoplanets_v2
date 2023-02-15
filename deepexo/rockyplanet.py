@@ -28,21 +28,37 @@ class RockyPlanet:
         self.model_b_scaler = joblib.load(os.path.join(model_path, "model_b_scaler.save"))
 
     def predict(self, planet_params):
-        """Predictes the .
+        """Predictes the Water radial fraction, Mantle radial fraction, Core radial fraction, Core mass fraction,
+        CMB pressure and CMB temperature for the given planetary parameters in terms of planetary mass M [M_Earth],
+        radius [R_Earth], bulk Fe/(Mg + Si) (molar ratio), and tide Love number k2.
+
+        Args:
+            planet_params (list): A list of planetary parameters in the order of [M, R, k2] or [M, R, cFeMg, k2].
+        Retures:
+            pred: contains parameters for distributions, not actual points on the graph.
+        """
         if len(planet_params) == 3:
-            print("正在调用inputs={}的model A进行预测".format(planet_params))
+            print("Predicting using model A with inputs={}".format(planet_params))
             scaled_params = self.model_a_scaler.transform(np.array(planet_params).reshape(1, -1))
             return self.model_a.predict(scaled_params)
         elif len(planet_params) == 4:
-            print("正在调用inputs={}的model B进行预测".format(planet_params))
+            print("Predicting using model B with inputs={}".format(planet_params))
             scaled_params = self.model_b_scaler.transform(np.array(planet_params).reshape(1, -1))
             return self.model_b.predict(scaled_params)
         else:
             raise ValueError(
                 "Invalid number of planet parameters. Expected 3 or 4, but got {}".format(len(planet_params)))
 
-    def plot(self, pred):
-
+    def plot(self, pred, save=False, filename="pred.png"):
+        """Plots the predicted distributions for Water radial fraction, Mantle radial fraction, Core radial fraction,
+        Core mass fraction, CMB pressure and CMB temperature.
+        Args:
+            pred (array): contains parameters for distributions, not actual points on the graph.
+            save (bool, optional): Defaults to False. If True, saves the plot to a file.
+            filename (str, optional): Defaults to "". The filename to save the plot to.
+        Returns:
+            None
+        """
         (y_min1, y_max1, y_min2, y_max2, y_min3, y_max3,
          y_min4, y_max4, y_min5, y_max5, y_min6, y_max6) = \
             0.00015137, 0.145835, 0.127618, 0.973427, 0.00787023, 0.799449, 1.17976e-06, 0.699986, 10.7182, 1999.49, 1689.37, 5673.87
@@ -114,7 +130,7 @@ class RockyPlanet:
 
         y_label = np.arange(0, 1, 0.001).reshape(-1, 1)
         fig = plt.figure(figsize=(6, 6))
-        fig.subplots_adjust(hspace=0.7, wspace=0.2)
+        fig.subplots_adjust(hspace=0.7, wspace=0.4)
         for i in range(OUTPUT_DIMS):
             ax = fig.add_subplot(3, 2, i + 1)
             mus_ = np.array(locals()['mus' + str(i)])
@@ -140,5 +156,9 @@ class RockyPlanet:
             ax.set_xticks(xticks[i])
             ax.set_xticklabels(xticklabels[i])
             ax.set_xlabel(predict_label[i])
+            ax.set_ylabel("Probability density")
 
-        return plt.show()
+        if save:
+            return plt.savefig(filename, dpi=300)
+        else:
+            return plt.show()
