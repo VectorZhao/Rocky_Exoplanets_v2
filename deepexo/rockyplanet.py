@@ -18,10 +18,10 @@ model_path = os.path.join(os.getcwd(), "deepexo/model")
 class RockyPlanet:
     def __init__(self):
         # print('init RockyPlanet')
-        self.model_a = load_model(os.path.join(model_path, "model_a.h5"), custom_objects={
+        self.model_a = load_model(os.path.join(model_path, "model_a1.h5"), custom_objects={
             'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
             "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
-        self.model_a_scaler = joblib.load(os.path.join(model_path, "model_a_scaler.save"))
+        self.model_a_scaler = joblib.load(os.path.join(model_path, "model_a1_scaler.save"))
         self.model_b = load_model(os.path.join(model_path, "model_b.h5"), custom_objects={
             'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
             "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
