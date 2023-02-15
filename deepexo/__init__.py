@@ -1,1 +1,0 @@
-from deepexo.rockyplanet import PlanetSynth

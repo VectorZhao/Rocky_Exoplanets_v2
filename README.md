@@ -21,7 +21,7 @@ We provide two machine learning models for uses: **Model A** trained on `[M, R, 
 Download [`Anaconda`](https://www.anaconda.com/products/individual#Downloads) and install it on your machine.
 Create a `conda` environment called `Rocky_Exoplanets` and install all the necessary dependencies:
 
-    $ conda create -n Rocky_Exoplanets pip python=3.7.6 keras-mdn-layer jupyter
+    $ conda create -n Rocky_Exoplanets pip python=3.7.6 jupyter
     
 ### Step 3:
 Activate the `Rocky_Exoplanets` environment:
@@ -46,12 +46,15 @@ Open `Jupyter Notebook` and load the file `MDN_two_planets_prediction.ipynb`:
 At this point you are ready to start investigating the interiors of rocky exoplanets!
 
 ## Usage
+
 ```python
-from deepexo import RockyPlanet
+from deepexo import rockyplanet
+
 # Kepler-78b
-M = 1.77 # mass in Earth masses
-R = 1.228 # radius in Earth radii
-cFeMg = 0.685 # bulk Fe/(Mg + Si) (molar ratio)
+M = 1.77  # mass in Earth masses
+R = 1.228  # radius in Earth radii
+cFeMg = 0.685  # bulk Fe/(Mg + Si) (molar ratio)
+
 
 ```
 ## References
