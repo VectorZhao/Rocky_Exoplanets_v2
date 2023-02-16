@@ -28,7 +28,7 @@ class RockyPlanet:
             "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
         self.model_b_scaler = joblib.load(os.path.join(model_path, "model_b_scaler.save"))
 
-    def predict(self, planet_params):
+    def predict(self, planet_params: object) -> object:
         """Predicts the Water radial fraction, Mantle radial fraction, Core radial fraction, Core mass fraction,
         CMB pressure and CMB temperature for the given planetary parameters in terms of planetary mass M [M_Earth],
         radius [R_Earth], bulk Fe/(Mg + Si) (molar ratio), and tide Love number k2.
@@ -50,7 +50,7 @@ class RockyPlanet:
             raise ValueError(
                 "Invalid number of planet parameters. Expected 3 or 4, but got {}".format(len(planet_params)))
 
-    def plot(self, pred, save=False, filename="pred.png"):
+    def plot(self, pred: object, save: object = False, filename: object = "pred.png") -> object:
         """Plots the predicted distributions for Water radial fraction, Mantle radial fraction, Core radial fraction,
         Core mass fraction, CMB pressure and CMB temperature.
         Args:

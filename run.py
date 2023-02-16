@@ -1,4 +1,5 @@
 from deepexo.rockyplanet import RockyPlanet
+
 # Keplar-78b
 M = 1.77  # mass in Earth masses
 R = 1.228  # radius in Earth radii
