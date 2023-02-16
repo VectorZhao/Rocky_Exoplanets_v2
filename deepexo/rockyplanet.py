@@ -31,7 +31,7 @@ class RockyPlanet:
     def predict(self, planet_params: object) -> object:
         """Predicts the Water radial fraction, Mantle radial fraction, Core radial fraction, Core mass fraction,
         CMB pressure and CMB temperature for the given planetary parameters in terms of planetary mass M [M_Earth],
-        radius [R_Earth], bulk Fe/(Mg + Si) (molar ratio), and tide Love number k2.
+        radius [R_Earth], bulk Fe/(Mg + Si) (molar ratio), and tidal Love number k2.
 
         Args:
             planet_params (list): A list of planetary parameters in the order of [M, R, k2] or [M, R, cFeMg, k2].
