@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 import numpy as np
 import math
+import functools
 import mdn
 import joblib
 import os
@@ -14,20 +15,41 @@ N_MIXES = 20  # 20 mixtures
 # print(os.getcwd())
 model_path = os.path.join(os.getcwd(), "deepexo/model")
 
+def lazy_property(fn):
+    attr_name = "_lazy_" + fn.__name__
 
+    @property
+    @functools.wraps(fn)
+    def _lazy_property(self):
+        if not hasattr(self, attr_name):
+            setattr(self, attr_name, fn(self))
+        return getattr(self, attr_name)
+
+    return _lazy_property
 class RockyPlanet:
     """A class for characterizing the interior structure of rocky exoplanets."""
     def __init__(self):
-        # print('init RockyPlanet')
-        self.model_a = load_model(os.path.join(model_path, "model_a.h5"), custom_objects={
-            'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
-            "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
-        self.model_a_scaler = joblib.load(os.path.join(model_path, "model_a_scaler.save"))
-        self.model_b = load_model(os.path.join(model_path, "model_b.h5"), custom_objects={
-            'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
-            "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
-        self.model_b_scaler = joblib.load(os.path.join(model_path, "model_b_scaler.save"))
+        pass
 
+    @lazy_property
+    def model_a(self):
+        return load_model(os.path.join(model_path, "model_a.h5"), custom_objects={
+            'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
+            "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
+
+    @lazy_property
+    def model_a_scaler(self):
+        return joblib.load(os.path.join(model_path, "model_a_scaler.save"))
+
+    @lazy_property
+    def model_b(self):
+        return load_model(os.path.join(model_path, "model_b.h5"), custom_objects={
+            'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
+            "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
+
+    @lazy_property
+    def model_b_scaler(self):
+        return joblib.load(os.path.join(model_path, "model_b_scaler.save"))
     def predict(self, planet_params: object) -> object:
         """Predicts the Water radial fraction, Mantle radial fraction, Core radial fraction, Core mass fraction,
         CMB pressure and CMB temperature for the given planetary parameters in terms of planetary mass M [M_Earth],
@@ -60,6 +82,8 @@ class RockyPlanet:
         Returns:
             None or saves the plot to a file.
         """
+        print("###############################################")
+        print("Plotting...")
         (y_min1, y_max1, y_min2, y_max2, y_min3, y_max3,
          y_min4, y_max4, y_min5, y_max5, y_min6, y_max6) = \
             0.00015137, 0.145835, 0.127618, 0.973427, 0.00787023, 0.799449, 1.17976e-06, 0.699986, 10.7182, 1999.49, 1689.37, 5673.87
@@ -154,6 +178,8 @@ class RockyPlanet:
             ax.set_xlabel(predict_label[i])
             ax.set_ylabel("Probability density")
         if save:
+            print("Saving figure to {}".format(filename))
             return plt.savefig(filename, dpi=300)
         else:
+            print("Showing figure")
             return plt.show()
