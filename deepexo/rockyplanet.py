@@ -16,25 +16,26 @@ model_path = os.path.join(os.getcwd(), "deepexo/model")
 
 
 class RockyPlanet:
+    """A class for characterizing the interior structure of rocky exoplanets."""
     def __init__(self):
         # print('init RockyPlanet')
-        self.model_a = load_model(os.path.join(model_path, "model_a1.h5"), custom_objects={
+        self.model_a = load_model(os.path.join(model_path, "model_a.h5"), custom_objects={
             'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
             "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
-        self.model_a_scaler = joblib.load(os.path.join(model_path, "model_a1_scaler.save"))
+        self.model_a_scaler = joblib.load(os.path.join(model_path, "model_a_scaler.save"))
         self.model_b = load_model(os.path.join(model_path, "model_b.h5"), custom_objects={
             'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
             "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
         self.model_b_scaler = joblib.load(os.path.join(model_path, "model_b_scaler.save"))
 
     def predict(self, planet_params):
-        """Predictes the Water radial fraction, Mantle radial fraction, Core radial fraction, Core mass fraction,
+        """Predicts the Water radial fraction, Mantle radial fraction, Core radial fraction, Core mass fraction,
         CMB pressure and CMB temperature for the given planetary parameters in terms of planetary mass M [M_Earth],
         radius [R_Earth], bulk Fe/(Mg + Si) (molar ratio), and tide Love number k2.
 
         Args:
             planet_params (list): A list of planetary parameters in the order of [M, R, k2] or [M, R, cFeMg, k2].
-        Retures:
+        Returns:
             pred: contains parameters for distributions, not actual points on the graph.
         """
         if len(planet_params) == 3:
@@ -57,7 +58,7 @@ class RockyPlanet:
             save (bool, optional): Defaults to False. If True, saves the plot to a file.
             filename (str, optional): Defaults to "". The filename to save the plot to.
         Returns:
-            None
+            None or saves the plot to a file.
         """
         (y_min1, y_max1, y_min2, y_max2, y_min3, y_max3,
          y_min4, y_max4, y_min5, y_max5, y_min6, y_max6) = \
@@ -73,7 +74,7 @@ class RockyPlanet:
                 locals()['mus' + str(m)].append(mus[0][n * OUTPUT_DIMS + m])
                 locals()['sigs' + str(m)].append(sigs[0][n * OUTPUT_DIMS + m])
         x_max = [1, 1, 1, 1, 1, 1]
-        x_maxlabels = [
+        x_max_labels = [
             y_min1 + (y_max1 - y_min1) * x_max[0],
             y_min2 + (y_max2 - y_min2) * x_max[1],
             y_min3 + (y_max3 - y_min3) * x_max[2],
@@ -90,17 +91,17 @@ class RockyPlanet:
         tcmb = []  # CMB pressure
 
         for x1 in np.arange(0.02, 0.15, 0.04):
-            wrf.append((x1 - y_min1) / (x_maxlabels[0] - y_min1) * x_max[0])
+            wrf.append((x1 - y_min1) / (x_max_labels[0] - y_min1) * x_max[0])
         for x2 in np.arange(0.2, 1, 0.2):
-            mrf.append((x2 - y_min2) / (x_maxlabels[1] - y_min2) * x_max[1])
+            mrf.append((x2 - y_min2) / (x_max_labels[1] - y_min2) * x_max[1])
         for x3 in np.arange(0.1, 0.9, 0.2):
-            crf.append((x3 - y_min3) / (x_maxlabels[2] - y_min3) * x_max[2])
+            crf.append((x3 - y_min3) / (x_max_labels[2] - y_min3) * x_max[2])
         for x4 in np.arange(0.1, 0.8, 0.2):
-            cmf.append((x4 - y_min4) / (x_maxlabels[3] - y_min4) * x_max[3])
+            cmf.append((x4 - y_min4) / (x_max_labels[3] - y_min4) * x_max[3])
         for x5 in np.arange(200, 2000, 400):
-            pcmb.append((x5 - y_min5) / (x_maxlabels[4] - y_min5) * x_max[4])
+            pcmb.append((x5 - y_min5) / (x_max_labels[4] - y_min5) * x_max[4])
         for x6 in np.arange(2000, 6000, 1000):
-            tcmb.append((x6 - y_min6) / (x_maxlabels[5] - y_min6) * x_max[5])
+            tcmb.append((x6 - y_min6) / (x_max_labels[5] - y_min6) * x_max[5])
 
         xticklabels = [[round(x, 2) for x in np.arange(0.02, 0.15, 0.04)],
                        [round(x, 2) for x in np.arange(0.2, 1, 0.2)],
@@ -110,7 +111,6 @@ class RockyPlanet:
                        [round(x, 2) for x in np.arange(2000, 6000, 1000)],
                        ]
         xticks = [wrf, mrf, crf, cmf, pcmb, tcmb]
-
         colors = [
             "steelblue",
             "#EA7D1A",
@@ -142,22 +142,17 @@ class RockyPlanet:
                 y_label,
                 GMM_PDF,
                 color=colors[i],
-                #         label=label,
                 lw=2,
                 zorder=10,
             )
             ax.set_xlim(0, x_max[i])
             ax.set_ylim(bottom=0)
-
             ax.xaxis.set_minor_locator(AutoMinorLocator())
             ax.yaxis.set_minor_locator(AutoMinorLocator())
-            #     print(xticks[i])
-            #     xticklabels[i]
             ax.set_xticks(xticks[i])
             ax.set_xticklabels(xticklabels[i])
             ax.set_xlabel(predict_label[i])
             ax.set_ylabel("Probability density")
-
         if save:
             return plt.savefig(filename, dpi=300)
         else:
