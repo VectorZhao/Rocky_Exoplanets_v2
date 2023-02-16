@@ -13,4 +13,8 @@ planet_params = [
 ]
 rp = RockyPlanet()
 pred = rp.predict(planet_params)
-rp.plot(pred, save=True, filename="pred.png")
+rp.plot(pred,
+        save=True,  # save to file
+        filename="pred.png"  # save to current directory, filename is pred.png, you can change the extension to eps
+        # or pdf
+        )
