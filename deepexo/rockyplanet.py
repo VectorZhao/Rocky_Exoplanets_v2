@@ -15,6 +15,7 @@ N_MIXES = 20  # 20 mixtures
 # print(os.getcwd())
 model_path = os.path.join(os.getcwd(), "deepexo/model")
 
+
 def lazy_property(fn):
     attr_name = "_lazy_" + fn.__name__
 
@@ -26,16 +27,23 @@ def lazy_property(fn):
         return getattr(self, attr_name)
 
     return _lazy_property
+
+
 class RockyPlanet:
     """A class for characterizing the interior structure of rocky exoplanets."""
+
     def __init__(self):
-        pass
+        self.planet_params = None
+        self.output_dims = 6  # 6 outputs:
+# 'H2O_radial_frac', 'Mantle_radial_frac', 'Core_radial_frac', 'Core_mass_frac', 'P_CMB', 'T_CMB',
+        self.n_mixes = 20
+
 
     @lazy_property
     def model_a(self):
         return load_model(os.path.join(model_path, "model_a.h5"), custom_objects={
-            'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
-            "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
+            'MDN': mdn.MDN(self.output_dims, self.n_mixes),
+            "mdn_loss_func": mdn.get_mixture_loss_func(self.output_dims, self.n_mixes)}, compile=False)
 
     @lazy_property
     def model_a_scaler(self):
@@ -44,12 +52,13 @@ class RockyPlanet:
     @lazy_property
     def model_b(self):
         return load_model(os.path.join(model_path, "model_b.h5"), custom_objects={
-            'MDN': mdn.MDN(OUTPUT_DIMS, N_MIXES),
-            "mdn_loss_func": mdn.get_mixture_loss_func(OUTPUT_DIMS, N_MIXES)}, compile=False)
+            'MDN': mdn.MDN(self.output_dims, self.n_mixes),
+            "mdn_loss_func": mdn.get_mixture_loss_func(self.output_dims, self.n_mixes)}, compile=False)
 
     @lazy_property
     def model_b_scaler(self):
         return joblib.load(os.path.join(model_path, "model_b_scaler.save"))
+
     def predict(self, planet_params: object) -> object:
         """Predicts the Water radial fraction, Mantle radial fraction, Core radial fraction, Core mass fraction,
         CMB pressure and CMB temperature for the given planetary parameters in terms of planetary mass M [M_Earth],
@@ -61,12 +70,14 @@ class RockyPlanet:
             pred: contains parameters for distributions, not actual points on the graph.
         """
         if len(planet_params) == 3:
-            print("Predicting using model A with inputs={}".format(planet_params))
+            print("Predicting using Model A with inputs={}".format(planet_params))
             scaled_params = self.model_a_scaler.transform(np.array(planet_params).reshape(1, -1))
+            self.planet_params = planet_params
             return self.model_a.predict(scaled_params)
         elif len(planet_params) == 4:
-            print("Predicting using model B with inputs={}".format(planet_params))
+            print("Predicting using Model B with inputs={}".format(planet_params))
             scaled_params = self.model_b_scaler.transform(np.array(planet_params).reshape(1, -1))
+            self.planet_params = planet_params
             return self.model_b.predict(scaled_params)
         else:
             raise ValueError(
@@ -177,6 +188,11 @@ class RockyPlanet:
             ax.set_xticklabels(xticklabels[i])
             ax.set_xlabel(predict_label[i])
             ax.set_ylabel("Probability density")
+            ax.grid(axis='x', which="both", color="gray", linestyle="-", linewidth=0.1)
+        if len(self.planet_params) == 3:
+            plt.suptitle("Model A", fontsize=16, fontweight="bold")
+        elif len(self.planet_params) == 4:
+            plt.suptitle("Model B", fontsize=16, fontweight="bold")
         if save:
             print("Saving figure to {}".format(filename))
             return plt.savefig(filename, dpi=300)
