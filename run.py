@@ -1,6 +1,6 @@
 from deepexo.rockyplanet import RockyPlanet
 
-# Keplar-78b
+# Kepler-78b
 M = 1.77  # mass in Earth masses
 R = 1.228  # radius in Earth radii
 cFeMgSi = 0.685  # bulk Fe/(Mg + Si) (molar ratio)
