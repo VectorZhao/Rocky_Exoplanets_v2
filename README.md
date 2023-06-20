@@ -7,7 +7,10 @@ In this work, We trained a machine learning model by using MDN algorithm to quic
 ## Machine Learning Models
 We provided two machine learning models for uses: **Model A** trained on `[M, R, Fe/(Mg + Si)]` inputs and **Model B** trained on `[M, R, Fe/(Mg + Si), k2]` inputs. `M`, `R`, and `Fe/(Mg + Si)` represent the mass, radius, and bulk Fe/Si and Mg/Si abundance ratios of the planet, respectively, and `k2` is the tidal Love number. The relative refractory composition of rocky exoplanets can be well constrained by the elemental abundances of their host stars. In [Adibekyan et al. (2021)](https://www.science.org/doi/10.1126/science.abg8794), a strong correlation with a slope ∼5 was achieved between the Fe/(Mg+Si) abundance ratios of the planets and of their host stars, 
 
- $$(\frac{Fe}{Mg + Si})_{planet} = -1.35 \pm 0.36 + 4.84 \pm 0.92 \times (\frac{Fe}{Mg + Si})_{star}$$
+ <p align="center">
+    $$(\frac{Fe}{Mg + Si})_{planet} = -1.35 \pm 0.36 + 4.84 \pm 0.92 \times (\frac{Fe}{Mg + Si})_{star}$$
+</p>
+
 
 
 **Model B** significantly breaks the density-composition degeneracy and accurately predicts the interior properties of rocky exoplanets, but its application is limited by some difficulties in measuring the tidal Love number `k2` of rocky exoplanets. Along with the development of space-based observation technologies, orbital or shape observations could be possible to determine the tidal Love number `k2` of rocky exoplanets and hence the machine learning models **A** and **B** would be applied broadly.
@@ -46,7 +49,7 @@ from deepexo.rockyplanet import RockyPlanet
 M = 1.77  # mass in Earth masses
 R = 1.228  # radius in Earth radii
 cFeMgSi = 0.685  # bulk Fe/(Mg + Si) (molar ratio)
-k2 = 0.819  # tidal Love number
+k2 = 0.823  # tidal Love number
 
 planet_params = [
     M,
