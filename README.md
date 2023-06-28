@@ -23,12 +23,12 @@ We provided two machine learning models for uses: **Model A** trained on `[M, R,
 Download [`Anaconda`](https://www.anaconda.com/products/individual#Downloads) and install it on your machine.
 Create a `conda` environment called `Rocky_Exoplanets` and install all the necessary dependencies:
 
-    $ conda create -n Rocky_Exoplanets pip python=3.7.6 jupyter
+    $ conda create -n deepexo pip python=3.7.6 jupyter
     
 ### Step 3:
-Activate the `Rocky_Exoplanets` environment:
+Activate the `deepexo` environment:
 
-    $ conda activate Rocky_Exoplanets
+    $ conda activate deepexo
 
 ### Step 4:
 Change into your local copy of the `Rocky_Exoplanets_v2` repo:
